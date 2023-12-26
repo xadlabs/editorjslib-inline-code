@@ -1,5 +1,6 @@
 .idea/
 assets/
 src/
+example/
 vite.config.js
 yarn.lock
