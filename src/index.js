@@ -1,9 +1,14 @@
 /**
  * Build styles
  */
- import './index.css';
- import { IconInlineCode } from '@codexteam/icons'
- import { isTextEmpty, isCaretAtLastPosition, isTextNode, startsWithCharacters } from './utils'
+import "./index.css";
+import { IconInlineCode } from "@codexteam/icons";
+import {
+  isTextEmpty,
+  isCaretAtLastPosition,
+  isTextNode,
+  startsWithCharacters,
+} from "./utils";
 /**
  * Inline Code Tool for the Editor.js
  *
@@ -11,17 +16,8 @@
  */
 export default class InlineCode {
   /**
-   * Class name for term-tag
-   *
-   * @type {string}
    */
-  static get CSS() {
-    return 'inline-code';
-  };
-
-  /**
-   */
-  constructor({api, config}) {
+  constructor({ api, config }) {
     this.api = api;
 
     /**
@@ -36,7 +32,7 @@ export default class InlineCode {
      *
      * @type {string}
      */
-    this.tag = 'CODE';
+    this.tag = "CODE";
 
     /**
      * CSS classes
@@ -44,27 +40,28 @@ export default class InlineCode {
     // TODO: Check if possible to control activeness automatically
     this.iconClasses = {
       base: this.api.styles.inlineToolButton,
-      active: this.api.styles.inlineToolButtonActive
+      active: this.api.styles.inlineToolButtonActive,
     };
 
-    document.querySelector(config.containerSelector)?.addEventListener("keydown", this.keyListener)
+    document
+      .querySelector(config.containerSelector)
+      ?.addEventListener("keydown", this.keyListener);
   }
-
 
   keyListener = (e) => {
-    const codeWrapper = this.api.selection.findParentTag(this.tag, InlineCode.CSS)
-    if (e.key !== "ArrowRight" || !codeWrapper) return
-    if (!isCaretAtLastPosition(codeWrapper)) return
+    const codeWrapper = this.api.selection.findParentTag(this.tag);
+    if (e.key !== "ArrowRight" || !codeWrapper) return;
+    if (!isCaretAtLastPosition(codeWrapper)) return;
 
-    codeWrapper.parentElement.normalize()
-    const nextSibling = codeWrapper.nextSibling
+    codeWrapper.parentElement.normalize();
+    const nextSibling = codeWrapper.nextSibling;
 
     if (!isTextNode(nextSibling) || startsWithCharacters(nextSibling.data)) {
-      codeWrapper.insertAdjacentText("afterend", "\u00A0")
+      codeWrapper.insertAdjacentText("afterend", "\u00A0");
     } else if (isTextEmpty(nextSibling.data)) {
-      nextSibling.replaceWith("\u00A0")
+      nextSibling.replaceWith("\u00A0");
     }
-  }
+  };
   /**
    * Specifies Tool as Inline Toolbar Tool
    *
@@ -80,8 +77,8 @@ export default class InlineCode {
    * @return {HTMLElement}
    */
   render() {
-    this.button = document.createElement('button');
-    this.button.type = 'button';
+    this.button = document.createElement("button");
+    this.button.type = "button";
     this.button.classList.add(this.iconClasses.base);
     this.button.innerHTML = this.toolboxIcon;
 
@@ -98,7 +95,7 @@ export default class InlineCode {
       return;
     }
 
-    let termWrapper = this.api.selection.findParentTag(this.tag, InlineCode.CSS);
+    let termWrapper = this.api.selection.findParentTag(this.tag);
 
     /**
      * If start or end of selection is in the highlighted block
@@ -120,8 +117,6 @@ export default class InlineCode {
      * Create a wrapper for highlighting
      */
     let codeElement = document.createElement(this.tag);
-
-    codeElement.classList.add(InlineCode.CSS);
 
     /**
      * SurroundContent throws an error if the Range splits a non-Text node with only one of its boundary points
@@ -175,7 +170,7 @@ export default class InlineCode {
    * Check and change Term's state for current selection
    */
   checkState() {
-    const termTag = this.api.selection.findParentTag(this.tag, InlineCode.CSS);
+    const termTag = this.api.selection.findParentTag(this.tag);
 
     this.button.classList.toggle(this.iconClasses.active, !!termTag);
   }
@@ -186,17 +181,5 @@ export default class InlineCode {
    */
   get toolboxIcon() {
     return IconInlineCode;
-  }
-
-  /**
-   * Sanitizer rule
-   * @return {{span: {class: string}}}
-   */
-  static get sanitize() {
-    return {
-      code: {
-        class: InlineCode.CSS
-      }
-    };
   }
 }
