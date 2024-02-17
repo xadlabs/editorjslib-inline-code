@@ -182,4 +182,14 @@ export default class InlineCode {
   get toolboxIcon() {
     return IconInlineCode;
   }
+
+  /**
+   * Sanitizer rule
+   * @return {{span: {class: string}}}
+   */
+  static get sanitize() {
+    return {
+      code: {},
+    };
+  }
 }
