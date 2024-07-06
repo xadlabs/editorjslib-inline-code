@@ -47,7 +47,7 @@ export default class InlineCode {
       active: this.api.styles.inlineToolButtonActive
     };
 
-    document.querySelector(config.containerSelector)?.addEventListener("keydown", this.keyListener)
+    config.holder?.addEventListener("keydown", this.keyListener)
   }
 
 

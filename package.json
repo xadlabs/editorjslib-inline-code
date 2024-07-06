@@ -1,5 +1,5 @@
 {
-  "name": "@juratbek/editorjs-inline-code",
+  "name": "editorjslib-inline-code",
   "version": "1.0.0",
   "keywords": [
     "inline",
@@ -22,7 +22,7 @@
     }
   },
   "scripts": {
-    "dev": "vite",
+    "dev": "vite build --watch",
     "build": "vite build"
   },
   "author": {
